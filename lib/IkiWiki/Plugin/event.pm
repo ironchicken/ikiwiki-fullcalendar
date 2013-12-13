@@ -137,8 +137,6 @@ sub find_times ($) {
 our @REQ_EVENT_PARAMS = qw(timestamp);
 our @OPT_EVENT_PARAMS = qw(desc location);
 
-use Data::Dumper;
-
 sub event {
     my %params = @_;
     my $page = $params{page};
@@ -211,48 +209,9 @@ sub savestate {
 
 package IkiWiki::PageSpec;
 
-use DateTime;
-use Date::Parse;
 use List::Util qw(reduce);
 use Scalar::Util qw(blessed);
 use IkiWiki::Plugin::event qw(parse_timestamp);
-
-# our $TZ = DateTime::TimeZone->new(name => 'UTC');
-
-# sub find_times ($) {
-#     my $page = shift;
-#     my $events = [];
-
-#     # retrieve the event/period parameters
-#     while (my ($id, $event) = each %{ $IkiWiki::pagestate{$page}{event} }) {
-# 	my ($start_time, $end_time, $reason);
-
-#  	if (exists $event->{timestamp}) {
-# 	    $start_time = DateTime->from_epoch(epoch => str2time($event->{timestamp}, 0), time_zone => $TZ);
-# 	} else {
-# 	    $reason = IkiWiki::FailReason->new("event directive missing timestamp parameter");
-# 	}
-# 	push $events, [$start_time, $end_time, $reason];
-#     }
-
-#     while (my ($id, $period) = each %{ $IkiWiki::pagestate{$page}{period} }) {
-# 	my ($start_time, $end_time, $reason);
-
-# 	if (exists $period->{start_time}) {
-# 	    $start_time = DateTime->from_epoch(epoch => str2time($period->{start_time}, 0), time_zone => $TZ);
-# 	} else {
-# 	    $reason = IkiWiki::FailReason->new("period directive missing start_time parameter");
-# 	}
-# 	if (exists $period->{end_time}) {
-# 	    $end_time = DateTime->from_epoch(epoch => str2time($period->{end_time}, 0), time_zone => $TZ);
-# 	} else {
-# 	    $reason = IkiWiki::FailReason->new("period directive missing end_time parameter");
-# 	}
-# 	push $events, [$start_time, $end_time, $reason];
-#     }
-
-#     return $events || [[undef, undef, IkiWiki::FailReason->new("page contains no event/period directives")]];
-# }
 
 sub match_before ($$;@) {
     my $page = shift;
