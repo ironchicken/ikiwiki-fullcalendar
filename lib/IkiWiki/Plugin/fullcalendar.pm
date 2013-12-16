@@ -145,7 +145,7 @@ sub fullcalendar (@) {
     }
 
     # Add any manually supplied events
-    push $sources_js, {events => decode_json($params{events})} if (exists $params{events});
+    push $sources_js, {events => from_json($params{events} =~ s/'/"/rg)} if (exists $params{events});
 
     # create .fullcalendar function call
     my $fc = { eventSources => $sources_js,
