@@ -174,7 +174,7 @@ sub needsbuild ($$) {
     # FIXME This is the only way I've found to get the fullcalendar
     # preprocess sub to find the pages with !event or !period
     # directives: by forcing all those pages to rebuild
-    push $altered, map { $_->{filename} =~ s|$config{srcdir}/?||rg } grep { $_->{count} } fgrep { /\[\[!(event|period)/ } (File::Find::Rule->file()->name('*.mdwn')->in($config{srcdir}));
+    push $altered, map { $_->{filename} =~ s|$config{srcdir}/?||rg } grep { $_->{count} } fgrep { /\[\[!(event|period|fullcalendar)/ } (File::Find::Rule->file()->name('*.mdwn')->in($config{srcdir}));
 
     return $altered;
 }
