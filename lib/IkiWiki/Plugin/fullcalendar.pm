@@ -133,9 +133,10 @@ sub fullcalendar (@) {
 		next if (!defined $span);
 
 		my $allday = $span->start->hour() == 0 && $span->start->minute() == 0;
+		my $multiday = $span->start->day() != $span->end->day();
 		my $dt_fmt = ($allday) ? '%Y-%m-%d' : '%Y-%m-%d %H:%M';
 		push $src->{events}, { start  => $span->start->strftime($dt_fmt),
-				       end    => (!$allday) ? $span->end->strftime($dt_fmt) : undef,
+				       end    => (!$allday || $multiday) ? $span->end->strftime($dt_fmt) : undef,
 				       title  => $attribs->{desc} || pagetitle($pg),
 				       allDay => $allday ? 'true' : 'false',
 				       url    => "/$pg"};
