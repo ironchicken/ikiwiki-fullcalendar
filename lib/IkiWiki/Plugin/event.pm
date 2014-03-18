@@ -135,7 +135,7 @@ sub find_times ($) {
 }
 
 our @REQ_EVENT_PARAMS = qw(timestamp);
-our @OPT_EVENT_PARAMS = qw(desc location);
+our @OPT_EVENT_PARAMS = qw(desc location url);
 
 sub event {
     my %params = @_;
@@ -167,7 +167,7 @@ sub event {
 }
 
 our @REQ_PERIOD_PARAMS = qw(start_time end_time);
-our @OPT_PERIOD_PARAMS = qw(desc location);
+our @OPT_PERIOD_PARAMS = qw(desc location url);
 
 sub period {
     my %params = @_;

@@ -139,7 +139,7 @@ sub fullcalendar (@) {
 				       end    => (!$allday || $multiday) ? $span->end->strftime($dt_fmt) : undef,
 				       title  => $attribs->{desc} || pagetitle($pg),
 				       allDay => $allday ? 'true' : 'false',
-				       url    => "/$pg"};
+				       url    => $attribs->{url} || "/$pg"};
 	    }
 	}
 	push $sources_js, $src;

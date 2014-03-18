@@ -14,14 +14,16 @@ Date::Parse); duration (optional, a string in the form
 /[0-9]+\s+(days|hours|minutes)/); description (optional, page title
 used by default); location (optional; may be geocoded); show
 (optional, determines whether or not the event should be rendered on
-the page, default is 'no').
+the page, default is 'no'); url (optional, a resource describing the
+event).
 
 Use the `[[!period ]]` directive in a page which represents a time
 period. Its parameters include: start_time (which will be parsed by
 Date::Parse); end_time (which will be parsed by Date::Parse);
 description (optional, page title used by default); location
 (optional; may be geocoded); show (optional, determines whether or not
-the period should be rendered on the page, default is 'no').
+the period should be rendered on the page, default is 'no'); url
+(optional, a resource describing the period).
 
 This plugin also provides the following pagespec predicates: before;
 after; between. These can be used to select pages having `[[!event ]]`
