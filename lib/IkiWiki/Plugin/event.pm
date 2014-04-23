@@ -129,6 +129,12 @@ sub find_times ($) {
 	    push($events, [DateTime::Span->from_datetime_and_duration(start => $start_time, $2 => $1), $attribs, $reason]);
 	} elsif ($start_time->hour() == 0 && $start_time->minute() == 0) {
 	    # default duration for untimed events is 1 day
+
+	    # FIXME duration => DateTime::Duration->new(days => 1)
+	    # would be better but it causes fullCalendar to expend
+	    # one-day events to two days
+	    #push($events, [DateTime::Span->from_datetime_and_duration(start => $start_time, duration => DateTime::Duration->new(days => 1)), $attribs, $reason]);
+
 	    push($events, [DateTime::Span->from_datetime_and_duration(start => $start_time, hours => 23, minutes => 59), $attribs, $reason]);
 	} else {
 	    # default duration for timed events is 1 hour

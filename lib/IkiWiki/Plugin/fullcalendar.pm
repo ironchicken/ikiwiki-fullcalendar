@@ -97,7 +97,11 @@ sub ics {
 		my $vevt = Data::ICal::Entry::Event->new;
 		$vevt->add_properties( summary => $attribs->{desc} || pagetitle($pg) );
 		$vevt->start($span->start);
-		$vevt->end($span->end);
+		if ($span->duration->days == 1) {
+		    $vevt->duration(DateTime::Duration->new(days => 1));
+		} else {
+		    $vevt->end($span->end);
+		}
 
 		$calendar->add_entry($vevt);
 	    }
