@@ -62,10 +62,32 @@ our $TZ = DateTime::TimeZone->new(name => 'UTC');
 sub parse_timestamp {
     my $timestamp = shift;
 
-    my $time = str2time($timestamp, 0);
-    return if (!defined $time);
+    my @ts = strptime($timestamp);
+    return if !@ts;
 
-    my $dt = DateTime->from_epoch(epoch => $time);
+    my ($ss,$mm,$hh,$day,$month,$year,$zone) = @ts;
+
+    # The year and month values from strptime are wacky
+    $year = 100 * ((int($year / 100)) + 19) + $year % 100;
+    $month += 1;
+
+    my $dt;
+    if ($zone) {
+	$dt = DateTime->new(
+	    year      => $year,
+	    month     => $month,
+	    day       => $day,
+	    hour      => $hh,
+	    minute    => $mm,
+	    time_zone => $zone);
+    } else {
+	$dt = DateTime->new(
+	    year      => $year,
+	    month     => $month,
+	    day       => $day);
+	$dt->set_hour($hh) if $hh;
+	$dt->set_minute($mm) if $mm;
+    }
 
     if ($dt->hour() == 0 && $dt->minute() == 0) {
 	$dt->truncate(to => 'day');
@@ -99,6 +121,8 @@ sub find_times ($) {
 	    $reason = IkiWiki::FailReason->new("event directive missing timestamp parameter");
 	}
 
+	next if !$start_time;
+
 	my $attribs = other_attribs $event, 'timestamp', 'duration';
 
 	if (defined $event->{duration} && $event->{duration} =~ /([0-9]+)\s+(days|hours|minutes)/) {
@@ -127,6 +151,8 @@ sub find_times ($) {
 	}
 
 	my $attribs = other_attribs $period, 'start_time', 'end_time';
+
+	next if !$start_time;
 
 	push $events, [DateTime::Span->from_datetimes(start => $start_time, end => $end_time), $attribs, $reason];
     }
