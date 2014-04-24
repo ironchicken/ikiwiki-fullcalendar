@@ -67,27 +67,21 @@ sub parse_timestamp {
 
     my ($ss,$mm,$hh,$day,$month,$year,$zone) = @ts;
 
+    # If no timezone is present in the timestamp string, assume the
+    # local timezone
+    $zone = $zone || DateTime::TimeZone->new(name => 'local')->name();
+
     # The year and month values from strptime are wacky
     $year = 100 * ((int($year / 100)) + 19) + $year % 100;
     $month += 1;
 
-    my $dt;
-    if ($zone) {
-	$dt = DateTime->new(
-	    year      => $year,
-	    month     => $month,
-	    day       => $day,
-	    hour      => $hh,
-	    minute    => $mm,
-	    time_zone => $zone);
-    } else {
-	$dt = DateTime->new(
-	    year      => $year,
-	    month     => $month,
-	    day       => $day);
-	$dt->set_hour($hh) if $hh;
-	$dt->set_minute($mm) if $mm;
-    }
+    my $dt = DateTime->new(
+	year      => $year,
+	month     => $month,
+	day       => $day,
+	time_zone => $zone);
+    $dt->set_hour($hh) if $hh;
+    $dt->set_minute($mm) if $mm;
 
     if ($dt->hour() == 0 && $dt->minute() == 0) {
 	$dt->truncate(to => 'day');
